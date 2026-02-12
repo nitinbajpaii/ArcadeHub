@@ -1,0 +1,129 @@
+.guess-game {
+  min-height: 100vh;
+  padding: 40px 0;
+}
+
+.game-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 48px 40px;
+  text-align: center;
+}
+
+.game-instruction {
+  font-size: 20px;
+  color: var(--text-dim);
+  margin-bottom: 12px;
+}
+
+.game-limit {
+  font-size: 18px;
+  color: var(--accent);
+  font-weight: 600;
+  margin-bottom: 32px;
+}
+
+.attempts-display {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 32px;
+}
+
+.attempts-count {
+  color: var(--accent);
+  font-size: 32px;
+  font-weight: 900;
+}
+
+.guess-input-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-bottom: 32px;
+}
+
+.guess-input {
+  text-align: center;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.feedback {
+  font-size: 28px;
+  font-weight: 700;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 32px;
+  background: rgba(139, 92, 246, 0.2);
+  border: 2px solid rgba(139, 92, 246, 0.5);
+  color: var(--primary);
+}
+
+.feedback.success {
+  background: rgba(16, 185, 129, 0.2);
+  border-color: var(--accent);
+  color: var(--accent);
+  animation: pulse 1s ease-in-out infinite;
+}
+
+.game-over-section {
+  margin: 40px 0;
+}
+
+.game-over-section h2 {
+  font-size: 48px;
+  margin-bottom: 20px;
+}
+
+.lose-text {
+  color: var(--danger);
+  text-shadow: 0 0 20px rgba(239, 68, 68, 0.8);
+}
+
+.win-message {
+  font-size: 20px;
+  color: var(--text-dim);
+  margin-bottom: 32px;
+}
+
+.guess-history {
+  margin-top: 40px;
+  padding-top: 32px;
+  border-top: 2px solid rgba(139, 92, 246, 0.3);
+}
+
+.guess-history h3 {
+  font-size: 20px;
+  margin-bottom: 20px;
+  color: var(--text-dim);
+}
+
+.history-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+}
+
+.history-item {
+  background: rgba(139, 92, 246, 0.2);
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 700;
+  color: var(--primary);
+  border: 1px solid rgba(139, 92, 246, 0.4);
+}
+
+@media (max-width: 768px) {
+  .game-container {
+    padding: 32px 24px;
+  }
+  
+  .game-instruction {
+    font-size: 18px;
+  }
+  
+  .feedback {
+    font-size: 20px;
+  }
+}
