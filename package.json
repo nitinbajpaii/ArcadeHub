@@ -1,0 +1,14 @@
+{
+  "name": "arcadehub",
+  "version": "1.0.0",
+  "description": "Interactive Mini Game Platform - Full Stack Gaming Website",
+  "scripts": {
+    "install-all": "cd backend && npm install && cd ../frontend && npm install",
+    "start-backend": "cd backend && npm start",
+    "start-frontend": "cd frontend && npm start",
+    "dev": "start.bat"
+  },
+  "keywords": ["gaming", "arcade", "react", "nodejs", "fullstack"],
+  "author": "ArcadeHub Team",
+  "license": "MIT"
+}
