@@ -7,6 +7,7 @@ import './Auth.css';
 const Signup = () => {
   const [formData, setFormData] = useState({ username: '', email: '', password: '' });
   const [error, setError] = useState('');
+  const [fieldErrors, setFieldErrors] = useState({ email: '', password: '' });
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
@@ -14,6 +15,24 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    setFieldErrors({ email: '', password: '' });
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    let hasError = false;
+
+    if (!emailRegex.test(formData.email.trim())) {
+      hasError = true;
+      setFieldErrors(prev => ({ ...prev, email: 'Please enter a valid email address' }));
+    }
+
+    if ((formData.password || '').length < 8) {
+      hasError = true;
+      setFieldErrors(prev => ({ ...prev, password: 'Password must be at least 8 characters long' }));
+    }
+
+    if (hasError) {
+      return;
+    }
     setLoading(true);
 
     try {
@@ -52,6 +71,7 @@ const Signup = () => {
             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
             required
           />
+          {fieldErrors.email && <div className="error-message">{fieldErrors.email}</div>}
           <input
             type="password"
             placeholder="Password"
@@ -60,6 +80,7 @@ const Signup = () => {
             onChange={(e) => setFormData({ ...formData, password: e.target.value })}
             required
           />
+          {fieldErrors.password && <div className="error-message">{fieldErrors.password}</div>}
           <button type="submit" className="btn btn-primary" disabled={loading}>
             {loading ? 'Creating Account...' : 'Sign Up'}
           </button>
