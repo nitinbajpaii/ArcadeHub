@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './Feedback.css';
+import { motion } from 'framer-motion';
 
 const DEFAULT_GUEST_NAME = 'Arcade User';
 
@@ -84,17 +85,27 @@ const Feedback = () => {
   return (
     <div className="feedback-page">
       <div className="container">
-        <div className="feedback-header">
+        <motion.div
+          className="feedback-header"
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+        >
           <h1 className="page-title">💡 Help Us Improve</h1>
           <p className="page-subtitle">Your ideas make ArcadeHub better!</p>
-        </div>
+        </motion.div>
 
-        <div className="feedback-container glass-card">
+        <motion.div
+          className="feedback-container glass-card"
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, delay: 0.05 }}
+        >
           {submitted ? (
-            <div className="success-message animate-slide-up">
+            <motion.div className="success-message animate-slide-up" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
               <h2>🎉 Thank You!</h2>
               <p>Your feedback has been received. We appreciate your input!</p>
-            </div>
+            </motion.div>
           ) : (
             <form action="https://api.web3forms.com/submit" method="POST" onSubmit={handleSubmit} className="feedback-form">
               <input type="hidden" name="access_key" value="8d1dc784-cee7-43f7-83c4-77386980a14b" />
@@ -189,26 +200,31 @@ const Feedback = () => {
                 </div>
               </div>
 
-              <button type="submit" className="btn btn-primary">
+              <motion.button
+                whileHover={{ scale: 1.05, y: -3, x: 3 }}
+                whileTap={{ scale: 0.98, y: 0 }}
+                type="submit"
+                className="btn btn-primary"
+              >
                 Submit Feedback
-              </button>
+              </motion.button>
             </form>
           )}
-        </div>
+        </motion.div>
 
         <div className="feedback-info">
-          <div className="info-card glass-card">
+          <motion.div whileHover={{ y: -6 }} className="info-card glass-card">
             <h3>🎮 Suggest New Games</h3>
             <p>Have an idea for an awesome game? We'd love to hear it!</p>
-          </div>
-          <div className="info-card glass-card">
+          </motion.div>
+          <motion.div whileHover={{ y: -6 }} className="info-card glass-card">
             <h3>⚡ Improve Existing</h3>
             <p>Help us make current games even more addictive</p>
-          </div>
-          <div className="info-card glass-card">
+          </motion.div>
+          <motion.div whileHover={{ y: -6 }} className="info-card glass-card">
             <h3>🐛 Report Bugs</h3>
             <p>Found something broken? Let us know so we can fix it</p>
-          </div>
+          </motion.div>
         </div>
       </div>
     </div>

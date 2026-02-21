@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { games } from '../utils/api';
 import './Leaderboard.css';
+import { motion } from 'framer-motion';
 
 const Leaderboard = () => {
   const [leaderboard, setLeaderboard] = useState([]);
@@ -46,7 +47,14 @@ const Leaderboard = () => {
             </div>
 
             {leaderboard.map((player, index) => (
-              <div key={index} className={`table-row ${index < 3 ? 'top-player' : ''}`}>
+              <motion.div
+                key={index}
+                className={`table-row ${index < 3 ? 'top-player' : ''}`}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.2, delay: index * 0.03 }}
+                whileHover={{ x: 6 }}
+              >
                 <div className="col-rank">
                   {index === 0 && '🥇'}
                   {index === 1 && '🥈'}
@@ -58,7 +66,7 @@ const Leaderboard = () => {
                 <div className="col-games">{player.totalGames}</div>
                 <div className="col-streak">{player.bestStreak}</div>
                 <div className="col-score">{player.totalScore}</div>
-              </div>
+              </motion.div>
             ))}
           </div>
         )}

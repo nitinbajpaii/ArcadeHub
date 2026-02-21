@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../utils/AuthContext';
 import { games } from '../utils/api';
 import './Dashboard.css';
+import { motion } from 'framer-motion';
 
 const Dashboard = () => {
   const { user } = useAuth();
@@ -30,31 +31,36 @@ const Dashboard = () => {
   return (
     <div className="dashboard">
       <div className="container">
-        <div className="dashboard-header animate-slide-up">
+        <motion.div
+          className="dashboard-header animate-slide-up"
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4 }}
+        >
           <h1>Welcome back, <span className="neon-text">{user?.username}</span>!</h1>
           <p>Ready to break some records?</p>
-        </div>
+        </motion.div>
 
         <div className="stats-grid">
-          <div className="stat-card glass-card">
+          <motion.div whileHover={{ y: -6 }} className="stat-card glass-card">
             <div className="stat-icon">🎮</div>
             <div className="stat-value">{stats?.user?.stats?.totalGames || 0}</div>
             <div className="stat-label">Total Games</div>
-          </div>
+          </motion.div>
 
-          <div className="stat-card glass-card">
+          <motion.div whileHover={{ y: -6 }} className="stat-card glass-card">
             <div className="stat-icon">🏆</div>
             <div className="stat-value">{stats?.user?.stats?.totalWins || 0}</div>
             <div className="stat-label">Total Wins</div>
-          </div>
+          </motion.div>
 
-          <div className="stat-card glass-card">
+          <motion.div whileHover={{ y: -6 }} className="stat-card glass-card">
             <div className="stat-icon">🔥</div>
             <div className="stat-value">{stats?.user?.stats?.bestStreak || 0}</div>
             <div className="stat-label">Best Streak</div>
-          </div>
+          </motion.div>
 
-          <div className="stat-card glass-card">
+          <motion.div whileHover={{ y: -6 }} className="stat-card glass-card">
             <div className="stat-icon">📊</div>
             <div className="stat-value">
               {stats?.user?.stats?.totalGames > 0 
@@ -62,29 +68,29 @@ const Dashboard = () => {
                 : 0}%
             </div>
             <div className="stat-label">Win Rate</div>
-          </div>
+          </motion.div>
         </div>
 
         <div className="quick-play">
           <h2>Quick Play</h2>
           <div className="game-select-grid">
-            <div className="game-select-card glass-card" onClick={() => navigate('/games/rps')}>
+            <motion.div whileHover={{ y: -8 }} className="game-select-card glass-card" onClick={() => navigate('/games/rps')}>
               <div className="game-select-icon">✊✋✌️</div>
               <h3>Rock Paper Scissors</h3>
               <p>Tournament Mode</p>
-            </div>
+            </motion.div>
 
-            <div className="game-select-card glass-card" onClick={() => navigate('/games/memory')}>
+            <motion.div whileHover={{ y: -8 }} className="game-select-card glass-card" onClick={() => navigate('/games/memory')}>
               <div className="game-select-icon">🃏</div>
               <h3>Memory Cards</h3>
               <p>Flip & Match</p>
-            </div>
+            </motion.div>
 
-            <div className="game-select-card glass-card" onClick={() => navigate('/games/guess')}>
+            <motion.div whileHover={{ y: -8 }} className="game-select-card glass-card" onClick={() => navigate('/games/guess')}>
               <div className="game-select-icon">🔢</div>
               <h3>Guess The Number</h3>
               <p>Mind Challenge</p>
-            </div>
+            </motion.div>
           </div>
         </div>
 
@@ -93,13 +99,13 @@ const Dashboard = () => {
             <h2>Recent Games</h2>
             <div className="recent-games-list">
               {stats.recentGames.slice(0, 5).map((game) => (
-                <div key={game.id} className="recent-game-item glass-card">
+                <motion.div key={game.id} className="recent-game-item glass-card" whileHover={{ y: -4 }}>
                   <span className="game-name">{game.game.toUpperCase()}</span>
                   <span className="game-score">Score: {game.score}</span>
                   <span className={`game-result ${game.details.won ? 'won' : 'lost'}`}>
                     {game.details.won ? '✓ Won' : '✗ Lost'}
                   </span>
-                </div>
+                </motion.div>
               ))}
             </div>
           </div>

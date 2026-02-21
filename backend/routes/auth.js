@@ -13,15 +13,6 @@ router.post('/signup', async (req, res) => {
       return res.status(400).json({ error: 'All fields required' });
     }
 
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailPattern.test(String(email).trim())) {
-      return res.status(400).json({ error: 'Please enter a valid email address' });
-    }
-
-    if (String(password).length < 8) {
-      return res.status(400).json({ error: 'Password must be at least 8 characters long' });
-    }
-
     const users = readData('users');
 
     if (users.find(u => u.email === email)) {

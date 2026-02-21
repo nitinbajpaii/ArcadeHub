@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../utils/AuthContext';
 import { auth } from '../utils/api';
 import './Auth.css';
+import { motion } from 'framer-motion';
 
 const Signup = () => {
   const [formData, setFormData] = useState({ username: '', email: '', password: '' });
@@ -48,7 +49,12 @@ const Signup = () => {
 
   return (
     <div className="auth-page">
-      <div className="auth-container glass-card animate-slide-up">
+      <motion.div
+        className="auth-container glass-card animate-slide-up"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+      >
         <h1 className="auth-title">Join ArcadeHub</h1>
         <p className="auth-subtitle">Create your account and start playing</p>
 
@@ -81,15 +87,21 @@ const Signup = () => {
             required
           />
           {fieldErrors.password && <div className="error-message">{fieldErrors.password}</div>}
-          <button type="submit" className="btn btn-primary" disabled={loading}>
+          <motion.button
+            whileHover={{ scale: 1.05, y: -3, x: 3 }}
+            whileTap={{ scale: 0.98, y: 0 }}
+            type="submit"
+            className="btn btn-primary"
+            disabled={loading}
+          >
             {loading ? 'Creating Account...' : 'Sign Up'}
-          </button>
+          </motion.button>
         </form>
 
         <p className="auth-switch">
           Already have an account? <Link to="/login">Login</Link>
         </p>
-      </div>
+      </motion.div>
     </div>
   );
 };
