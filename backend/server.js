@@ -16,21 +16,44 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: process.env.FRONTEND_URL || '*', // Allow Vercel frontend or all for dev
+  origin: [
+    'https://arcade-hub-two.vercel.app',
+    'http://localhost:3000'
+  ],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true
 }));
 app.use(express.json());
 
+// Request logging middleware
+app.use((req, res, next) => {
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
+  if (req.method === 'POST') {
+    console.log('Body:', JSON.stringify(req.body, null, 2));
+  }
+  next();
+});
+
 // Routes
 app.get('/api/test', (req, res) => {
-  res.json({ message: 'Backend is running and MongoDB connection attempted!' });
+  console.log('✅ Test route hit');
+  res.json({ 
+    status: 'API working',
+    message: 'Backend is running!',
+    timestamp: new Date().toISOString()
+  });
 });
 
 app.use('/api/auth', authRoutes);
 app.use('/api/games', gameRoutes);
 app.use('/api/feedback', feedbackRoutes);
 app.use('/api/test', testRoutes);
+
+// Catch-all for undefined routes
+app.use((req, res) => {
+  console.log(`⚠️ Unmatched Route: ${req.method} ${req.url}`);
+  res.status(404).json({ error: 'Route not found' });
+});
 
 const PORT = process.env.PORT || 5000;
 

@@ -6,20 +6,31 @@ const User = require('../models/User');
 const router = express.Router();
 
 router.post('/signup', async (req, res) => {
+  console.log('📝 Signup attempt started');
   try {
     const { username, email, password } = req.body;
 
+    // 1. Validation
     if (!username || !email || !password) {
-      return res.status(400).json({ error: 'All fields required' });
+      console.log('❌ Signup failed: Missing fields');
+      return res.status(400).json({ error: 'Username, email, and password are required' });
     }
 
+    // 2. Check if user already exists
+    console.log(`🔍 Checking if user exists: ${email} or ${username}`);
     let user = await User.findOne({ $or: [{ email }, { username }] });
     if (user) {
-      return res.status(400).json({ error: 'User already exists' });
+      console.log('❌ Signup failed: User already exists');
+      return res.status(400).json({ error: 'Email or Username already taken' });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    // 3. Hash password
+    console.log('🔐 Hashing password...');
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
 
+    // 4. Create and save user
+    console.log('💾 Saving user to MongoDB...');
     user = new User({
       username,
       email,
@@ -27,10 +38,12 @@ router.post('/signup', async (req, res) => {
     });
 
     await user.save();
+    console.log('✅ User saved successfully');
 
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET);
+    // 5. Generate Token
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
 
-    res.json({
+    res.status(201).json({
       token,
       user: {
         id: user._id,
@@ -40,8 +53,12 @@ router.post('/signup', async (req, res) => {
       }
     });
   } catch (error) {
-    console.error('Signup error:', error);
-    res.status(500).json({ error: 'Server error' });
+    console.error('💥 SIGNUP CRITICAL ERROR:', error);
+    res.status(500).json({ 
+      error: 'Server error during signup',
+      details: error.message,
+      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
+    });
   }
 });
 
