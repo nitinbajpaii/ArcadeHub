@@ -1,52 +1,48 @@
 const express = require('express');
 const authMiddleware = require('../middleware/auth');
-const { readData, writeData } = require('../data/storage');
+const Score = require('../models/Score');
+const User = require('../models/User');
 
 const router = express.Router();
 
-router.post('/save-score', authMiddleware, (req, res) => {
+router.post('/save-score', authMiddleware, async (req, res) => {
   try {
     const { game, score, details } = req.body;
     const userId = req.userId;
 
-    const scores = readData('scores');
-    const users = readData('users');
-
-    const newScore = {
-      id: Date.now().toString(),
+    const newScore = new Score({
       userId,
       game,
       score,
-      details,
-      timestamp: new Date().toISOString()
-    };
+      details
+    });
 
-    scores.push(newScore);
-    writeData('scores', scores);
+    await newScore.save();
 
-    const userIndex = users.findIndex(u => u.id === userId);
-    if (userIndex !== -1) {
-      users[userIndex].stats.totalGames++;
-      if (details.won) users[userIndex].stats.totalWins++;
-      if (details.streak > users[userIndex].stats.bestStreak) {
-        users[userIndex].stats.bestStreak = details.streak;
+    const user = await User.findById(userId);
+    if (user) {
+      user.stats.totalGames++;
+      if (details.won) user.stats.totalWins++;
+      if (details.streak > user.stats.bestStreak) {
+        user.stats.bestStreak = details.streak;
       }
-      writeData('users', users);
+      await user.save();
     }
 
     res.json({ success: true, score: newScore });
   } catch (error) {
+    console.error('Save score error:', error);
     res.status(500).json({ error: 'Server error' });
   }
 });
 
-router.get('/leaderboard', authMiddleware, (req, res) => {
+router.get('/leaderboard', authMiddleware, async (req, res) => {
   try {
-    const users = readData('users');
-    const scores = readData('scores');
+    const users = await User.find();
+    const scores = await Score.find();
 
     const leaderboard = users.map(user => {
-      const userScores = scores.filter(s => s.userId === user.id);
+      const userScores = scores.filter(s => s.userId.toString() === user._id.toString());
       const totalScore = userScores.reduce((sum, s) => sum + (s.score || 0), 0);
 
       return {
@@ -60,22 +56,20 @@ router.get('/leaderboard', authMiddleware, (req, res) => {
 
     res.json(leaderboard);
   } catch (error) {
+    console.error('Leaderboard error:', error);
     res.status(500).json({ error: 'Server error' });
   }
 });
 
-router.get('/my-stats', authMiddleware, (req, res) => {
+router.get('/my-stats', authMiddleware, async (req, res) => {
   try {
     const userId = req.userId;
-    const users = readData('users');
-    const scores = readData('scores');
-
-    const user = users.find(u => u.id === userId);
+    const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    const userScores = scores.filter(s => s.userId === userId);
+    const userScores = await Score.find({ userId }).sort({ timestamp: -1 });
 
     const gameStats = {
       rps: userScores.filter(s => s.game === 'rps'),
@@ -89,9 +83,10 @@ router.get('/my-stats', authMiddleware, (req, res) => {
         stats: user.stats
       },
       gameStats,
-      recentGames: userScores.slice(-10).reverse()
+      recentGames: userScores.slice(0, 10)
     });
   } catch (error) {
+    console.error('My stats error:', error);
     res.status(500).json({ error: 'Server error' });
   }
 });

@@ -1,9 +1,9 @@
 const express = require('express');
-const { readData, writeData } = require('../data/storage');
+const Feedback = require('../models/Feedback');
 
 const router = express.Router();
 
-router.post('/submit', (req, res) => {
+router.post('/submit', async (req, res) => {
   try {
     const { email, category, game, message, rating } = req.body;
 
@@ -11,23 +11,19 @@ router.post('/submit', (req, res) => {
       return res.status(400).json({ error: 'Category and message required' });
     }
 
-    const feedback = readData('feedback');
-
-    const newFeedback = {
-      id: Date.now().toString(),
+    const newFeedback = new Feedback({
       email: email || 'anonymous',
       category,
       game: game || 'general',
       message,
-      rating: rating || 0,
-      timestamp: new Date().toISOString()
-    };
+      rating: rating || 0
+    });
 
-    feedback.push(newFeedback);
-    writeData('feedback', feedback);
+    await newFeedback.save();
 
     res.json({ success: true, message: 'Feedback submitted successfully!' });
   } catch (error) {
+    console.error('Feedback submit error:', error);
     res.status(500).json({ error: 'Server error' });
   }
 });
