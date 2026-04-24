@@ -41,7 +41,13 @@ const Signup = () => {
       login(response.data.user, response.data.token);
       navigate('/dashboard');
     } catch (err) {
-      setError(err.response?.data?.error || 'Signup failed');
+      console.error('Signup Error Details:', {
+        message: err.message,
+        response: err.response?.data,
+        status: err.response?.status,
+        config: err.config
+      });
+      setError(err.response?.data?.error || 'Signup failed. Please check your connection.');
     } finally {
       setLoading(false);
     }

@@ -9,7 +9,10 @@ const api = axios.create({
   }
 });
 
+console.log('🚀 API Configured with URL:', API_URL);
+
 api.interceptors.request.use((config) => {
+  console.log(`📡 Sending ${config.method.toUpperCase()} request to: ${config.baseURL}${config.url}`);
   const token = localStorage.getItem('token');
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;

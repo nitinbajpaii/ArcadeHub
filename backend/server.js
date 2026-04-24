@@ -14,6 +14,16 @@ connectDB();
 
 const app = express();
 
+// Request logging middleware - MUST BE FIRST to catch everything
+app.use((req, res, next) => {
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
+  console.log(`Origin: ${req.get('origin') || 'No Origin'}`);
+  if (req.method === 'POST') {
+    console.log('Body:', JSON.stringify(req.body, null, 2));
+  }
+  next();
+});
+
 // Middleware
 const frontendUrl = process.env.FRONTEND_URL ? process.env.FRONTEND_URL.replace(/\/$/, "") : 'https://arcade-hub-two.vercel.app';
 
@@ -27,15 +37,6 @@ app.use(cors({
   credentials: true
 }));
 app.use(express.json());
-
-// Request logging middleware
-app.use((req, res, next) => {
-  console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
-  if (req.method === 'POST') {
-    console.log('Body:', JSON.stringify(req.body, null, 2));
-  }
-  next();
-});
 
 // Routes
 app.get('/', (req, res) => {
