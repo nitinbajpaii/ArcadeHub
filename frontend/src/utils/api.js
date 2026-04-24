@@ -1,18 +1,21 @@
 import axios from 'axios';
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+// For deployment, fallback to the Render URL if env is missing
+const API_URL = process.env.REACT_APP_API_URL || 'https://arcadehub-backend.onrender.com/api';
 
 const api = axios.create({
   baseURL: API_URL,
+  timeout: 10000, // 10 second timeout
   headers: {
     'Content-Type': 'application/json'
   }
 });
 
-console.log('🚀 API Configured with URL:', API_URL);
+console.log('🚀 API Base URL:', API_URL);
 
 api.interceptors.request.use((config) => {
-  console.log(`📡 Sending ${config.method.toUpperCase()} request to: ${config.baseURL}${config.url}`);
+  const fullUrl = `${config.baseURL}${config.url}`;
+  console.log(`📡 [API Request] ${config.method.toUpperCase()} -> ${fullUrl}`);
   const token = localStorage.getItem('token');
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;

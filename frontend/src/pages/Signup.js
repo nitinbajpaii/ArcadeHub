@@ -41,13 +41,10 @@ const Signup = () => {
       login(response.data.user, response.data.token);
       navigate('/dashboard');
     } catch (err) {
-      console.error('Signup Error Details:', {
-        message: err.message,
-        response: err.response?.data,
-        status: err.response?.status,
-        config: err.config
-      });
-      setError(err.response?.data?.error || 'Signup failed. Please check your connection.');
+      console.error('Signup Error Details:', err);
+      const errorMessage = err.response?.data?.error 
+        || (err.code === 'ECONNABORTED' ? 'Request timed out' : `Connection failed to ${auth.signup.name} at ${err.config?.url || 'server'}`);
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }

@@ -22,13 +22,10 @@ const Login = () => {
       login(response.data.user, response.data.token);
       navigate('/dashboard');
     } catch (err) {
-      console.error('Login Error Details:', {
-        message: err.message,
-        response: err.response?.data,
-        status: err.response?.status,
-        config: err.config
-      });
-      setError(err.response?.data?.error || 'Login failed. Please check your connection.');
+      console.error('Login Error Details:', err);
+      const errorMessage = err.response?.data?.error 
+        || (err.code === 'ECONNABORTED' ? 'Request timed out' : `Connection failed to ${auth.login.name} at ${err.config?.url || 'server'}`);
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
