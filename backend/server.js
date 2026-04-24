@@ -14,29 +14,36 @@ connectDB();
 
 const app = express();
 
-// Request logging middleware - MUST BE FIRST to catch everything
-app.use((req, res, next) => {
-  console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
-  console.log(`Origin: ${req.get('origin') || 'No Origin'}`);
-  if (req.method === 'POST') {
-    console.log('Body:', JSON.stringify(req.body, null, 2));
-  }
-  next();
-});
-
-// Middleware
+// 1. CORS - Must be very first
 const frontendUrl = process.env.FRONTEND_URL ? process.env.FRONTEND_URL.replace(/\/$/, "") : 'https://arcade-hub-two.vercel.app';
 
 app.use(cors({
-  origin: [
-    frontendUrl,
-    'https://arcade-hub-two.vercel.app',
-    'http://localhost:3000'
-  ],
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials: true
+  origin: function (origin, callback) {
+    const allowedOrigins = [frontendUrl, 'https://arcade-hub-two.vercel.app', 'http://localhost:3000'];
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      console.log(`🚫 CORS Blocked Origin: ${origin}`);
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  credentials: true,
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
+
+// 2. Parse JSON
 app.use(express.json());
+
+// 3. Detailed Request Logging (Now after JSON so we can see body)
+app.use((req, res, next) => {
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
+  console.log(`Origin Header: ${req.get('origin') || 'No Origin'}`);
+  if (req.method === 'POST' || req.method === 'PUT') {
+    console.log('Request Body:', JSON.stringify(req.body, null, 2));
+  }
+  next();
+});
 
 // Routes
 app.get('/', (req, res) => {
