@@ -63,26 +63,33 @@ router.post('/signup', async (req, res) => {
 });
 
 router.post('/login', async (req, res) => {
+  console.log('🔑 Login attempt started');
   try {
     const { email, password } = req.body;
 
     if (!email || !password) {
-      return res.status(400).json({ error: 'All fields required' });
+      console.log('❌ Login failed: Missing fields');
+      return res.status(400).json({ error: 'Email and password are required' });
     }
 
+    console.log(`🔍 Finding user: ${email}`);
     const user = await User.findOne({ email });
 
     if (!user) {
+      console.log('❌ Login failed: User not found');
       return res.status(400).json({ error: 'Invalid credentials' });
     }
 
+    console.log('🔐 Comparing passwords...');
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
+      console.log('❌ Login failed: Password mismatch');
       return res.status(400).json({ error: 'Invalid credentials' });
     }
 
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET);
+    console.log('✅ Login successful, generating token...');
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
 
     res.json({
       token,
@@ -94,8 +101,11 @@ router.post('/login', async (req, res) => {
       }
     });
   } catch (error) {
-    console.error('Login error:', error);
-    res.status(500).json({ error: 'Server error' });
+    console.error('💥 LOGIN CRITICAL ERROR:', error);
+    res.status(500).json({ 
+      error: 'Server error during login',
+      details: error.message 
+    });
   }
 });
 

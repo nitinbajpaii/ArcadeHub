@@ -15,8 +15,11 @@ connectDB();
 const app = express();
 
 // Middleware
+const frontendUrl = process.env.FRONTEND_URL ? process.env.FRONTEND_URL.replace(/\/$/, "") : 'https://arcade-hub-two.vercel.app';
+
 app.use(cors({
   origin: [
+    frontendUrl,
     'https://arcade-hub-two.vercel.app',
     'http://localhost:3000'
   ],
@@ -35,6 +38,10 @@ app.use((req, res, next) => {
 });
 
 // Routes
+app.get('/', (req, res) => {
+  res.send('🎮 ArcadeHub API Running');
+});
+
 app.get('/api/test', (req, res) => {
   console.log('✅ Test route hit');
   res.json({ 
