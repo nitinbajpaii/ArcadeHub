@@ -22,6 +22,8 @@
 body {
   font-family: 'Rajdhani', sans-serif;
   background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 100%);
+  background-attachment: fixed; /* Keeps background fixed during scroll */
+  background-size: cover;
   color: var(--text);
   min-height: 100vh;
   overflow-x: hidden;
@@ -34,6 +36,10 @@ h1, h2, h3, h4, h5, h6 {
 
 .app {
   min-height: 100vh;
+}
+
+.main-content {
+  padding-top: 80px; /* Offset for fixed navbar */
 }
 
 .container {

@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'r
 import { AnimatePresence, motion } from 'framer-motion';
 import { AuthProvider, useAuth } from './utils/AuthContext';
 import Navbar from './components/Navbar';
+import Footer from './components/Footer';
+import ScrollToTop from './components/ScrollToTop';
 import Landing from './pages/Landing';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
@@ -40,22 +42,27 @@ function App() {
   return (
     <AuthProvider>
       <Router>
+        <ScrollToTop />
         <div className="app">
           <Navbar />
-          <PageWrapper>
-            <Routes>
-              <Route path="/" element={<Landing />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<Signup />} />
-              <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-              <Route path="/games" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-              <Route path="/games/rps" element={<ProtectedRoute><RPS /></ProtectedRoute>} />
-              <Route path="/games/memory" element={<ProtectedRoute><Memory /></ProtectedRoute>} />
-              <Route path="/games/guess" element={<ProtectedRoute><Guess /></ProtectedRoute>} />
-              <Route path="/leaderboard" element={<ProtectedRoute><Leaderboard /></ProtectedRoute>} />
-              <Route path="/feedback" element={<ProtectedRoute><Feedback /></ProtectedRoute>} />
-            </Routes>
-          </PageWrapper>
+          <div className="main-content">
+            <PageWrapper>
+              <Routes>
+                <Route path="/" element={<Landing />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/signup" element={<Signup />} />
+                <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+                <Route path="/games" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+                <Route path="/games/rps" element={<ProtectedRoute><RPS /></ProtectedRoute>} />
+                <Route path="/games/memory" element={<ProtectedRoute><Memory /></ProtectedRoute>} />
+                <Route path="/games/guess" element={<ProtectedRoute><Guess /></ProtectedRoute>} />
+                <Route path="/leaderboard" element={<ProtectedRoute><Leaderboard /></ProtectedRoute>} />
+                <Route path="/feedback" element={<Feedback />} />
+                <Route path="/contact" element={<Feedback />} />
+              </Routes>
+            </PageWrapper>
+          </div>
+          <Footer />
         </div>
       </Router>
     </AuthProvider>

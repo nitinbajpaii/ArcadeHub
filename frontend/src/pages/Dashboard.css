@@ -1,6 +1,6 @@
 .dashboard {
   min-height: 100vh;
-  padding: 40px 0;
+  padding-bottom: 40px;
 }
 
 .dashboard-header {
@@ -45,6 +45,10 @@
 .stat-label {
   color: var(--text-dim);
   font-size: 16px;
+}
+
+.quick-play {
+  margin-top: 40px;
 }
 
 .quick-play h2 {

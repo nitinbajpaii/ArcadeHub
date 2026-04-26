@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState, useRef } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../utils/AuthContext';
 import { games } from '../utils/api';
 import './Dashboard.css';
@@ -8,12 +8,37 @@ import { motion } from 'framer-motion';
 const Dashboard = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
+  const dashboardRef = useRef(null);
+  const gamesRef = useRef(null);
 
   useEffect(() => {
     fetchStats();
   }, []);
+
+  useEffect(() => {
+    if (loading) return;
+
+    if (location.pathname === '/games' && gamesRef.current) {
+      const offset = 70;
+      const bodyRect = document.body.getBoundingClientRect().top;
+      const elementRect = gamesRef.current.getBoundingClientRect().top;
+      const elementPosition = elementRect - bodyRect;
+      const offsetPosition = elementPosition - offset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+    } else if (location.pathname === '/dashboard' && dashboardRef.current) {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }
+  }, [location.pathname, loading]);
 
   const fetchStats = async () => {
     try {
@@ -29,7 +54,7 @@ const Dashboard = () => {
   if (loading) return <div className="loading">Loading...</div>;
 
   return (
-    <div className="dashboard">
+    <div className="dashboard" ref={dashboardRef}>
       <div className="container">
         <motion.div
           className="dashboard-header animate-slide-up"
@@ -71,7 +96,7 @@ const Dashboard = () => {
           </motion.div>
         </div>
 
-        <div className="quick-play">
+        <div className="quick-play" ref={gamesRef}>
           <h2>Quick Play</h2>
           <div className="game-select-grid">
             <motion.div whileHover={{ y: -8 }} className="game-select-card glass-card" onClick={() => navigate('/games/rps')}>

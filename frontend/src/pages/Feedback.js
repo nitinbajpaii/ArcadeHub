@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../utils/AuthContext';
 import './Feedback.css';
 import { motion } from 'framer-motion';
 
@@ -16,6 +18,8 @@ const getStoredUserName = () => {
 };
 
 const Feedback = () => {
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
   const storedUserName = getStoredUserName();
   const resolvedUserName = storedUserName || DEFAULT_GUEST_NAME;
 
@@ -33,6 +37,14 @@ const Feedback = () => {
   useEffect(() => {
     setFormData((prev) => (prev.name ? prev : { ...prev, name: resolvedUserName }));
   }, [resolvedUserName]);
+
+  const handleBack = () => {
+    if (isAuthenticated) {
+      navigate('/dashboard');
+    } else {
+      navigate('/');
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -75,6 +87,7 @@ const Feedback = () => {
       setTimeout(() => {
         setSubmitted(false);
         setFormData({ name: '', email: '', category: '', game: '', message: '', rating: 0 });
+        handleBack(); // Redirect after success
       }, 3000);
     } catch (err) {
       console.error(err);
@@ -84,6 +97,10 @@ const Feedback = () => {
 
   return (
     <div className="feedback-page">
+      {/* Decorative background elements */}
+      <div className="bg-blob blob-1"></div>
+      <div className="bg-blob blob-2"></div>
+      
       <div className="container">
         <motion.div
           className="feedback-header"
@@ -91,6 +108,11 @@ const Feedback = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
         >
+          <div className="header-top">
+            <button className="btn-back" onClick={handleBack}>
+              ← Go Back
+            </button>
+          </div>
           <h1 className="page-title">💡 Help Us Improve</h1>
           <p className="page-subtitle">Your ideas make ArcadeHub better!</p>
         </motion.div>
@@ -112,7 +134,7 @@ const Feedback = () => {
               {error && <div className="error-message">{error}</div>}
 
               <div className="form-group">
-                <label>Name *</label>
+                <label>👤 Name *</label>
                 <input
                   type="text"
                   name="name"
@@ -125,7 +147,7 @@ const Feedback = () => {
               </div>
 
               <div className="form-group">
-                <label>Email *</label>
+                <label>📧 Email *</label>
                 <input
                   type="email"
                   name="email"
@@ -138,7 +160,7 @@ const Feedback = () => {
               </div>
 
               <div className="form-group">
-                <label>Category *</label>
+                <label>📂 Category *</label>
                 <select
                   className="input-field"
                   name="category"
@@ -156,7 +178,7 @@ const Feedback = () => {
 
               {(formData.category === 'improve' || formData.category === 'bug') && (
                 <div className="form-group">
-                  <label>Select Game</label>
+                  <label>🕹️ Select Game</label>
                   <select
                     className="input-field"
                     name="game"
@@ -172,7 +194,7 @@ const Feedback = () => {
               )}
 
               <div className="form-group">
-                <label>Your Message *</label>
+                <label>💬 Your Message *</label>
                 <textarea
                   className="input-field textarea"
                   name="message"
@@ -185,7 +207,7 @@ const Feedback = () => {
               </div>
 
               <div className="form-group">
-                <label>Rate Your Experience</label>
+                <label>⭐ Rate Your Experience</label>
                 <input type="hidden" name="rating" value={formData.rating} />
                 <div className="rating-stars">
                   {[1, 2, 3, 4, 5].map((star) => (
