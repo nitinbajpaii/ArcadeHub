@@ -1,123 +1,166 @@
-# 🎮 ArcadeHub - Interactive Mini Game Platform
+# 🎮 ArcadeHub — Interactive Gaming Platform
 
-A full-stack interactive gaming website with authentication, multiple games, leaderboards, and player feedback system.
+![React](https://img.shields.io/badge/Frontend-React-blue)
+![Node](https://img.shields.io/badge/Backend-Node.js-green)
+![MongoDB](https://img.shields.io/badge/Database-MongoDB-brightgreen)
+![Deployment](https://img.shields.io/badge/Deploy-Vercel%20%2B%20Render-black)
 
-## 🎯 Features
-
-### Games
-- **Rock Paper Scissors** - Tournament mode (Best of 5/10)
-- **Memory Cards** - Flip and match card game
-- **Guess The Number** - Number guessing challenge
-
-### Platform Features
-- User authentication (Signup/Login)
-- Personal dashboard with stats
-- Global leaderboard
-- Score tracking & win streaks
-- Player feedback system
-- Dark neon gaming theme UI
-
-## 🚀 Tech Stack
-
-**Frontend:**
-- React
-- React Router
-- Axios
-- CSS3 with animations
-
-**Backend:**
-- Node.js
-- Express.js
-- JWT Authentication
-- File-based storage
-
-## 📦 Installation
-
-### Backend Setup
-
-1. Navigate to backend folder:
-```bash
-cd backend
-```
-
-2. Install dependencies:
-```bash
-npm install
-```
-
-3. Start the server:
-```bash
-npm start
-```
-
-Server runs on `http://localhost:5000`
-
-### Frontend Setup
-
-1. Navigate to frontend folder:
-```bash
-cd frontend
-```
-
-2. Dependencies are already installed
-
-3. Start the React app:
-```bash
-npm start
-```
-
-App runs on `http://localhost:3000`
-
-## 🎮 How to Use
-
-1. **Sign Up** - Create a new account
-2. **Login** - Access your dashboard
-3. **Play Games** - Choose from 3 different games
-4. **Track Progress** - View your stats and scores
-5. **Compete** - Check the leaderboard
-6. **Give Feedback** - Help improve the platform
-
-## 📁 Project Structure
-
-```
-backend/
-├── data/           # Data storage
-├── middleware/     # Auth middleware
-├── routes/         # API routes
-└── server.js       # Main server
-
-frontend/
-├── src/
-│   ├── components/ # Reusable components
-│   ├── pages/      # Page components
-│   ├── games/      # Game components
-│   ├── utils/      # API & Auth utilities
-│   └── styles/     # CSS files
-```
-
-## 🎨 Design Philosophy
-
-- Game-first platform (no traditional About/Contact pages)
-- Every page increases engagement
-- Smooth animations and micro-interactions
-- Dark neon gaming aesthetic
-- Mobile responsive
-
-## 🔐 Security
-
-- Passwords hashed with bcrypt
-- JWT token authentication
-- Protected routes
-- Secure API endpoints
-
-## 🎯 Future Enhancements
-
-- More games
-- Multiplayer modes
-- Achievements system
-- Social features
-- Admin dashboard
+ArcadeHub is a full-stack interactive gaming platform where users can play mini-games, track their performance, compete on leaderboards, and share feedback — all inside a sleek dark neon UI.
 
 ---
 
-Built with ❤️ for gamers who can't stop playing "just one more game"
+## 🌐 Live Demo
+
+🎯 **Frontend (Live App):** https://arcade-hub-two.vercel.app/  
+⚙️ **Backend:** Private API deployed on Render  
+
+---
+
+## ✨ Features
+
+### 🎮 Games
+- 🪨 Rock Paper Scissors (Tournament mode)
+- 🧠 Memory Card Game
+- 🔢 Guess The Number
+
+### 🧑‍💻 Platform Features
+- 🔐 User Authentication (Signup/Login with JWT)
+- 📊 Personal Dashboard (stats, streaks, performance)
+- 🏆 Global Leaderboard
+- 📈 Score Tracking System
+- 💬 Feedback / Contact System
+- 🌙 Dark Neon Gaming UI (modern + responsive)
+
+---
+
+## 🏗️ Tech Stack
+
+**Frontend:** React.js, React Router, Axios, CSS3 (Animations + Neon Theme)  
+**Backend:** Node.js, Express.js, JWT Authentication, Bcrypt  
+**Database:** MongoDB Atlas  
+**Deployment:** Vercel (Frontend), Render (Backend)
+
+---
+
+## 📁 Project Structure
+
+
+ArcadeHub/
+├── backend/
+│ ├── data/
+│ ├── middleware/
+│ ├── routes/
+│ └── server.js
+│
+├── frontend/
+│ ├── src/
+│ │ ├── components/
+│ │ ├── pages/
+│ │ ├── games/
+│ │ ├── utils/
+│ │ └── styles/
+
+
+---
+
+## ⚙️ Environment Variables
+
+**Backend (.env):**
+
+PORT=5000
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_secret_key
+FRONTEND_URL=https://arcade-hub-two.vercel.app
+
+
+**Frontend (.env):**
+
+VITE_API_URL=https://your-backend.onrender.com
+
+
+---
+
+## 🚀 Local Setup
+
+**Clone Repo:**
+
+git clone https://github.com/nitinbajpaii/arcadehub.git
+
+cd arcadehub
+
+
+**Backend:**
+
+cd backend
+npm install
+npm start
+
+👉 http://localhost:5000
+
+**Frontend:**
+
+cd frontend
+npm install
+npm start
+
+👉 http://localhost:3000
+
+---
+
+## 🎮 How to Use
+
+1. Sign up / Login  
+2. Access your dashboard  
+3. Play games 🎮  
+4. Track performance 📊  
+5. Compete on leaderboard 🏆  
+6. Submit feedback 💬  
+
+---
+
+## 🎨 UI Philosophy
+
+- ⚡ Fast and responsive  
+- 🎮 Game-first experience  
+- 🌌 Dark neon aesthetic  
+- 📱 Mobile-friendly  
+
+---
+
+## 🔐 Security
+
+- 🔒 Bcrypt password hashing  
+- 🔑 JWT authentication  
+- 🛡️ Protected routes  
+- 🌐 MongoDB Atlas  
+
+---
+
+## 🚀 Future Enhancements
+
+- 🎮 More games  
+- 👥 Multiplayer  
+- 🏅 Achievements  
+- 💬 Social features  
+- 🛠️ Admin dashboard  
+
+---
+
+## 🤝 Contributing
+
+Pull requests are welcome.
+
+---
+
+## 👨‍💻 Author
+
+**Nitin Bajpai**  
+GitHub: https://github.com/nitinbajpaii  
+Email: nitinbajpai2006@gmail.com  
+
+---
+
+## ❤️ Final Note
+
+Built for gamers who always say:  
+**"Just one more game..." 🎮🔥**
