@@ -44,24 +44,22 @@ ArcadeHub is a full-stack interactive gaming platform where users can play mini-
 
 ## 📁 Project Structure
 
-
+```
 ArcadeHub/
 ├── backend/
-│ ├── data/
-│ ├── middleware/
-│ ├── routes/
-│ └── server.js
+│   ├── data/
+│   ├── middleware/
+│   ├── routes/
+│   └── server.js
 │
 ├── frontend/
-│ ├── src/
-│ │ ├── components/
-│ │ ├── pages/
-│ │ ├── games/
-│ │ ├── utils/
-│ │ └── styles/
-
-
----
+│   ├── src/
+│   │   ├── components/
+│   │   ├── pages/
+│   │   ├── games/
+│   │   ├── utils/
+│   │   └── styles/
+```
 
 ## ⚙️ Environment Variables
 
